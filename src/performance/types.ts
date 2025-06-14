@@ -1,4 +1,3 @@
-import * as vscode from 'vscode';
 
 export interface PerformanceMetrics {
     /** CPU usage percentage (0-100) */
@@ -21,7 +20,7 @@ export interface PerformanceMetrics {
     networkStats: NetworkStats;
     /** Number of active extensions */
     activeExtensions: number;
-    
+
     // Legacy metrics for backward compatibility
     /** @deprecated Use cpu instead */
     cpuUsage?: number;
@@ -33,30 +32,32 @@ export interface PerformanceMetrics {
     platform?: string;
     /** @deprecated Use gcStats.lastGCTime instead */
     lastGCTime?: number;
-    
+
     // Extension specific metrics
     extensionMetrics?: {
         cpu: number;
         memory: number;
         lastUpdate: number;
     };
-    
+
     // File system metrics
     fsMetrics?: {
         reads: number;
         writes: number;
         lastReset: number;
     };
-    
+
     // Indexing metrics
     indexingMetrics?: {
         filesIndexed: number;
         timeSpent: number;
         lastIndex: number;
     };
-    
+
     // Memory history for trend analysis
     memoryHistory?: number[];
+    cpuHistory?: number[];
+    loadHistory?: number[];
 }
 
 export interface HeapStats {

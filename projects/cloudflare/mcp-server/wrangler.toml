@@ -1,0 +1,25 @@
+name = "redqueen-mcp-server"
+main = "src/index.ts"
+compatibility_date = "2024-03-20"
+
+# D1 Database
+[[d1_databases]]
+binding = "DB"
+database_name = "redqueen_mcp_db"
+database_id = "b6480f86-323e-429f-a7b0-0247ca6a59f5"
+
+# KV Namespace
+[[kv_namespaces]]
+binding = "CONTRACTS"
+id = "1888cd56e0204dd5a0d55fade1af3259"
+
+# Environment Variables
+[vars]
+ENVIRONMENT = "development"
+
+# Routes
+routes = [
+  { pattern = "/claim", methods = ["POST"] },
+  { pattern = "/contract/:id", methods = ["GET"] },
+  { pattern = "/drift-report", methods = ["POST"] }
+]

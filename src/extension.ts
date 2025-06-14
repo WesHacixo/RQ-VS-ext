@@ -1,6 +1,6 @@
-import * as vscode from 'vscode';
-import { getMetrics, watch, PerformanceMetrics } from './performance/monitor';
 import * as os from 'os';
+import * as vscode from 'vscode';
+import { getMetrics, PerformanceMetrics, watch } from './performance/monitor';
 import { IconGenerator } from './ui/iconGenerator';
 import { IMFOverlayManager } from './ui/imfOverlays';
 import { MetricsHUD } from './ui/metricsHUD';
@@ -69,7 +69,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     // Store context for later use
     extensionContext = context;
-    
+
     // Register commands
     context.subscriptions.push(
         vscode.commands.registerCommand('vsblue.showPerformanceDetails', () => {
@@ -154,7 +154,7 @@ function startPerformanceMonitoring(context: vscode.ExtensionContext): void {
         if (metricsHUD) {
             metricsHUD.updateMetrics(metrics);
         }
-        
+
         // Log significant events
         if (metrics.cpuUsage > 0.9) {
             console.warn(`High CPU usage: ${(metrics.cpuUsage * 100).toFixed(1)}%`);
@@ -208,7 +208,7 @@ export function deactivate(): void {
         stopWatching();
         stopWatching = null;
     }
-    
+
     // Clean up all panels
     try {
         for (const panel of activePanels) {
@@ -224,7 +224,7 @@ export function deactivate(): void {
     } catch (error) {
         console.error('Error cleaning up panels:', error);
     }
-    
+
     // Clean up other resources
     try {
         if (extensionContext?.subscriptions) {
@@ -241,7 +241,7 @@ export function deactivate(): void {
     } catch (error) {
         console.error('Error cleaning up resources:', error);
     }
-    
+
     // Reset monitoring state
     isMonitoring = false;
 }
@@ -266,7 +266,7 @@ function showPerformanceDetails(context: vscode.ExtensionContext): void {
             retainContextWhenHidden: true
         }
     );
-    
+
     // Track the panel
     activePanels.add(performancePanel);
 
@@ -289,7 +289,7 @@ function showPerformanceDetails(context: vscode.ExtensionContext): void {
         null,
         context.subscriptions
     );
-    
+
     // Add to context subscriptions
     context.subscriptions.push(disposable);
 
@@ -420,7 +420,7 @@ function showExtensionDetails(context: vscode.ExtensionContext): void {
     } else {
         extensionPanel.webview.html = '<p>No metrics available</p>';
     }
-    
+
     extensionPanel.onDidDispose(() => {
         extensionPanel = undefined;
     });
@@ -447,7 +447,7 @@ function showEditorDetails(context: vscode.ExtensionContext): void {
         }
     );
 
-    editorPanel.webview.html = getEditorDetailsHtml();
+    editorPanel.webview.html = currentMetrics ? getEditorDetailsHtml(currentMetrics) : '<div>No metrics available</div>';
     editorPanel.onDidDispose(() => {
         editorPanel = undefined;
     });
@@ -479,7 +479,7 @@ function showGCDetails(context: vscode.ExtensionContext): void {
 
     // Initial update
     updateWebview();
-    
+
     // Update on metrics change
     const disposable = vscode.workspace.onDidChangeTextDocument(() => {
         if (currentMetrics) {
@@ -514,36 +514,36 @@ function getPerformanceDetailsHtml(metrics: PerformanceMetrics): string {
         <head>
             <title>Performance Details</title>
             <style>
-                body { 
-                    font-family: var(--vscode-font-family); 
+                body {
+                    font-family: var(--vscode-font-family);
                     padding: 20px;
                     color: var(--vscode-foreground);
                     background: var(--vscode-editor-background);
                 }
-                .metric { 
+                .metric {
                     margin-bottom: 15px;
                     padding: 12px;
                     background: var(--vscode-editorWidget-background);
                     border-radius: 4px;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 }
-                .metric-label { 
+                .metric-label {
                     font-weight: 600;
                     color: var(--vscode-foreground);
                     margin-bottom: 6px;
                 }
-                .metric-value { 
+                .metric-value {
                     color: var(--vscode-descriptionForeground);
                     font-family: var(--vscode-editor-font-family);
                 }
-                h2 { 
+                h2 {
                     color: var(--vscode-foreground);
                     margin-top: 0;
                     padding-bottom: 10px;
                     border-bottom: 1px solid var(--vscode-editor-lineHighlightBorder);
                 }
-                .chart-container { 
-                    margin: 20px 0; 
+                .chart-container {
+                    margin: 20px 0;
                     height: 200px;
                     background: var(--vscode-editorWidget-background);
                     border-radius: 4px;
@@ -568,7 +568,7 @@ function getPerformanceDetailsHtml(metrics: PerformanceMetrics): string {
             </div>
             <div class="metric">
                 <div class="metric-label">System Load Average</div>
-                <div class="metric-value">${metrics.loadAverage.map((l, i) => 
+                <div class="metric-value">${metrics.loadAverage.map((l, i) =>
                     `${i === 0 ? '1 min' : i === 1 ? '5 min' : '15 min'}: ${l.toFixed(2)}`
                 ).join(' | ')}</div>
             </div>
@@ -637,29 +637,29 @@ function getGCDetailsHtml(metrics: PerformanceMetrics): string {
         <head>
             <title>Garbage Collection Details</title>
             <style>
-                body { 
-                    font-family: var(--vscode-font-family); 
+                body {
+                    font-family: var(--vscode-font-family);
                     padding: 20px;
                     color: var(--vscode-foreground);
                     background: var(--vscode-editor-background);
                 }
-                .metric { 
+                .metric {
                     margin-bottom: 15px;
                     padding: 12px;
                     background: var(--vscode-editorWidget-background);
                     border-radius: 4px;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 }
-                .metric-label { 
+                .metric-label {
                     font-weight: 600;
                     color: var(--vscode-foreground);
                     margin-bottom: 6px;
                 }
-                .metric-value { 
+                .metric-value {
                     color: var(--vscode-descriptionForeground);
                     font-family: var(--vscode-editor-font-family);
                 }
-                h2 { 
+                h2 {
                     color: var(--vscode-foreground);
                     margin-top: 0;
                     padding-bottom: 10px;
@@ -675,9 +675,9 @@ function getGCDetailsHtml(metrics: PerformanceMetrics): string {
                 .memory-used {
                     height: 100%;
                     background: var(--vscode-progressBar-background);
-                    background: linear-gradient(90deg, 
-                        var(--vscode-editor-selectionBackground) 0%, 
-                        var(--vscode-editor-selectionBackground) ${metrics.memoryUsageMB / metrics.memoryTotalMB * 100}%, 
+                    background: linear-gradient(90deg,
+                        var(--vscode-editor-selectionBackground) 0%,
+                        var(--vscode-editor-selectionBackground) ${metrics.memoryUsageMB / metrics.memoryTotalMB * 100}%,
                         transparent ${metrics.memoryUsageMB / metrics.memoryTotalMB * 100}%);
                     transition: width 0.3s ease;
                 }
@@ -720,36 +720,36 @@ function getExtensionDetailsHtml(metrics: PerformanceMetrics): string {
 
     const extensions = vscode.extensions.all;
     const activeExtensions = extensions.filter(ext => ext.isActive);
-    
+
     return `
         <!DOCTYPE html>
         <html>
         <head>
             <title>Extension Details</title>
             <style>
-                body { 
-                    font-family: var(--vscode-font-family); 
+                body {
+                    font-family: var(--vscode-font-family);
                     padding: 20px;
                     color: var(--vscode-foreground);
                     background: var(--vscode-editor-background);
                 }
-                .metric { 
+                .metric {
                     margin-bottom: 15px;
                     padding: 12px;
                     background: var(--vscode-editorWidget-background);
                     border-radius: 4px;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 }
-                .metric-label { 
+                .metric-label {
                     font-weight: 600;
                     color: var(--vscode-foreground);
                     margin-bottom: 6px;
                 }
-                .metric-value { 
+                .metric-value {
                     color: var(--vscode-descriptionForeground);
                     font-family: var(--vscode-editor-font-family);
                 }
-                h2 { 
+                h2 {
                     color: var(--vscode-foreground);
                     margin-top: 0;
                     padding-bottom: 10px;
@@ -814,7 +814,7 @@ function getEditorDetailsHtml(metrics: PerformanceMetrics): string {
     const lineCount = document?.lineCount || 0;
     const wordCount = document?.getText().split(/\s+/).filter(word => word.length > 0).length || 0;
     const selection = editor?.selection;
-    const cursorPosition = selection ? 
+    const cursorPosition = selection ?
         `Line ${selection.start.line + 1}, Column ${selection.start.character + 1}` : 'No selection';
 
     return `
@@ -823,29 +823,29 @@ function getEditorDetailsHtml(metrics: PerformanceMetrics): string {
         <head>
             <title>Editor Details</title>
             <style>
-                body { 
-                    font-family: var(--vscode-font-family); 
+                body {
+                    font-family: var(--vscode-font-family);
                     padding: 20px;
                     color: var(--vscode-foreground);
                     background: var(--vscode-editor-background);
                 }
-                .metric { 
+                .metric {
                     margin-bottom: 15px;
                     padding: 12px;
                     background: var(--vscode-editorWidget-background);
                     border-radius: 4px;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 }
-                .metric-label { 
+                .metric-label {
                     font-weight: 600;
                     color: var(--vscode-foreground);
                     margin-bottom: 6px;
                 }
-                .metric-value { 
+                .metric-value {
                     color: var(--vscode-descriptionForeground);
                     font-family: var(--vscode-editor-font-family);
                 }
-                h2 { 
+                h2 {
                     color: var(--vscode-foreground);
                     margin-top: 0;
                     padding-bottom: 10px;
@@ -895,29 +895,29 @@ function getMemoryDetailsHtml(metrics: PerformanceMetrics): string {
         <head>
             <title>Memory Details</title>
             <style>
-                body { 
-                    font-family: var(--vscode-font-family); 
+                body {
+                    font-family: var(--vscode-font-family);
                     padding: 20px;
                     color: var(--vscode-foreground);
                     background: var(--vscode-editor-background);
                 }
-                .metric { 
+                .metric {
                     margin-bottom: 15px;
                     padding: 12px;
                     background: var(--vscode-editorWidget-background);
                     border-radius: 4px;
                     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
                 }
-                .metric-label { 
+                .metric-label {
                     font-weight: 600;
                     color: var(--vscode-foreground);
                     margin-bottom: 6px;
                 }
-                .metric-value { 
+                .metric-value {
                     color: var(--vscode-descriptionForeground);
                     font-family: var(--vscode-editor-font-family);
                 }
-                h2 { 
+                h2 {
                     color: var(--vscode-foreground);
                     margin-top: 0;
                     padding-bottom: 10px;
@@ -933,9 +933,9 @@ function getMemoryDetailsHtml(metrics: PerformanceMetrics): string {
                 .memory-used {
                     height: 100%;
                     background: var(--vscode-progressBar-background);
-                    background: linear-gradient(90deg, 
-                        var(--vscode-editor-selectionBackground) 0%, 
-                        var(--vscode-editor-selectionBackground) ${metrics.memoryUsageMB / metrics.memoryTotalMB * 100}%, 
+                    background: linear-gradient(90deg,
+                        var(--vscode-editor-selectionBackground) 0%,
+                        var(--vscode-editor-selectionBackground) ${metrics.memoryUsageMB / metrics.memoryTotalMB * 100}%,
                         transparent ${metrics.memoryUsageMB / metrics.memoryTotalMB * 100}%);
                     transition: width 0.3s ease;
                 }
@@ -983,20 +983,20 @@ function getMemoryHistoryChart(history: number[]): string {
     if (history.length === 0) {
         return '<pre>No data available</pre>';
     }
-    
+
     const max = Math.max(...history);
     if (max === 0) {
         return '<pre>No data available</pre>';
     }
-    
+
     const scale = 10;
     const scaled = history.map(h => Math.round((h / max) * scale));
-    
+
     let chart = '';
     for (let i = scale; i >= 0; i--) {
         chart += scaled.map(h => h >= i ? '█' : ' ').join('') + '\n';
     }
-    
+
     return `<pre>${chart}</pre>`;
 }
 
@@ -1012,11 +1012,11 @@ function formatBytes(bytes: number): string {
     if (bytes === 0) {
         return '0 B';
     }
-    
+
     const k = 1024;
     const sizes = ['B', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 }
 
@@ -1030,13 +1030,13 @@ function formatUptime(seconds: number): string {
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
     const secs = Math.floor(seconds % 60);
-    
+
     const parts = [];
     if (days > 0) {parts.push(`${days}d`);}
     if (hours > 0) {parts.push(`${hours}h`);}
     if (minutes > 0) {parts.push(`${minutes}m`);}
     if (secs > 0 || parts.length === 0) {parts.push(`${secs}s`);}
-    
+
     return parts.join(' ');
 }
 
@@ -1046,13 +1046,13 @@ function formatUptime(seconds: number): string {
 function updateStatusBar(metrics: PerformanceMetrics): void {
     // Update CPU status bar item
     const cpuText = `CPU: ${(metrics.cpuUsage * 100).toFixed(1)}%`;
-    
+
     // Update memory status bar item
     const memoryText = `Mem: ${metrics.memoryUsageMB.toFixed(1)}/${metrics.memoryTotalMB.toFixed(1)} MB`;
-    
+
     // Update load status bar item
     const loadText = `Load: ${metrics.loadAverage[0].toFixed(2)}`;
-    
+
     // Create or update status bar items
     if (!statusBarItems.cpu) {
         statusBarItems.cpu = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
@@ -1061,7 +1061,7 @@ function updateStatusBar(metrics: PerformanceMetrics): void {
     }
     statusBarItems.cpu.text = cpuText;
     statusBarItems.cpu.show();
-    
+
     if (!statusBarItems.memory) {
         statusBarItems.memory = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 99);
         statusBarItems.memory.command = 'vsblue.showMemoryDetails';
@@ -1069,7 +1069,7 @@ function updateStatusBar(metrics: PerformanceMetrics): void {
     }
     statusBarItems.memory.text = memoryText;
     statusBarItems.memory.show();
-    
+
     if (!statusBarItems.load) {
         statusBarItems.load = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 98);
         statusBarItems.load.command = 'vsblue.showSystemDetails';
@@ -1087,27 +1087,27 @@ function updateAllPanels(metrics: PerformanceMetrics): void {
     if (performancePanel) {
         performancePanel.webview.html = getPerformanceDetailsHtml(metrics);
     }
-    
+
     // Update memory panel if open
     if (memoryPanel) {
         memoryPanel.webview.html = getMemoryDetailsHtml(metrics);
     }
-    
+
     // Update system panel if open
     if (systemPanel) {
         systemPanel.webview.html = getSystemDetailsHtml(metrics);
     }
-    
+
     // Update extension panel if open
     if (extensionPanel) {
         extensionPanel.webview.html = getExtensionDetailsHtml(metrics);
     }
-    
+
     // Update editor panel if open
     if (editorPanel) {
         editorPanel.webview.html = getEditorDetailsHtml(metrics);
     }
-    
+
     // Update GC panel if open
     if (gcPanel) {
         gcPanel.webview.html = getGCDetailsHtml(metrics);
@@ -1132,9 +1132,9 @@ function startMonitoring(): void {
     if (isMonitoring) {
         return;
     }
-    
+
     isMonitoring = true;
-    
+
     // Get initial metrics
     const initialMetrics = getMetrics();
     if (initialMetrics) {
@@ -1142,21 +1142,21 @@ function startMonitoring(): void {
         updateStatusBar(initialMetrics);
         updateAllPanels(initialMetrics);
     }
-    
+
     // Start watching for metrics updates
     const watcher = watch((metrics: PerformanceMetrics) => {
         currentMetrics = metrics;
         updateStatusBar(metrics);
         updateAllPanels(metrics);
     });
-    
+
     // Store the stop function
     if (watcher) {
         stopWatching = watcher;
     } else {
         stopWatching = null;
     }
-    
+
     vscode.window.showInformationMessage('Performance monitoring started');
 }
 
@@ -1167,15 +1167,15 @@ function stopMonitoring(): void {
     if (!isMonitoring) {
         return;
     }
-    
+
     isMonitoring = false;
-    
+
     // Stop watching for metrics updates
     if (stopWatching) {
         stopWatching();
         stopWatching = null;
     }
-    
+
     // Clear status bar items
     if (statusBarItems.cpu) {
         statusBarItems.cpu.hide();
@@ -1192,6 +1192,6 @@ function stopMonitoring(): void {
         statusBarItems.load.dispose();
         delete statusBarItems.load;
     }
-    
+
     vscode.window.showInformationMessage('Performance monitoring stopped');
 }

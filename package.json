@@ -38,27 +38,59 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:unit": "jest --testMatch='**/__tests__/unit/**/*.test.ts'",
+    "test:integration": "jest --testMatch='**/__tests__/integration/**/*.test.ts'",
+    "test:e2e": "jest --testMatch='**/__tests__/e2e/**/*.test.ts'",
+    "prepare": "husky",
+    "start:mcp": "ts-node scripts/start-mcp.ts"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250614.0",
     "@types/glob": "^8.1.0",
+    "@types/jest": "^29.5.14",
     "@types/mocha": "^10.0.6",
     "@types/node": "20.x",
+    "@types/node-fetch": "^2.6.12",
     "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
     "@vscode/test-electron": "^2.3.8",
     "eslint": "^8.56.0",
     "glob": "^10.3.10",
+    "hono": "^4.7.11",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "lint-staged": "^16.1.1",
     "mocha": "^10.2.0",
-    "typescript": "^5.3.3"
+    "prettier": "^3.5.3",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "zod": "^3.25.64"
   },
   "dependencies": {
+    "@types/express": "^5.0.3",
     "@types/prismjs": "^1.26.5",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@typescript-eslint/typescript-estree": "^8.34.0",
     "chart.js": "^4.4.9",
+    "chokidar": "^4.0.3",
+    "express": "^5.1.0",
+    "node-fetch": "^3.3.2",
     "prismjs": "^1.30.0"
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "tsc --noEmit",
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
   }
 }

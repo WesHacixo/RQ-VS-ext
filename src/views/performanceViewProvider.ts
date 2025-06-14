@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
-import { getMetrics, watch, PerformanceMetrics } from '../performance/monitor';
+import { getMetrics, PerformanceMetrics, watch } from '../performance/monitor';
 
 export class PerformanceViewProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'vsblue.performanceView';
     public static readonly bottomViewType = 'vsblue.performanceViewBottom';
 
     private _view?: vscode.WebviewView;
-    private _updateInterval?: NodeJS.Timeout | (() => void);
+    private _updateInterval?: () => void;
 
     constructor(
         private readonly _extensionUri: vscode.Uri
@@ -46,11 +46,11 @@ export class PerformanceViewProvider implements vscode.WebviewViewProvider {
 
     private _startUpdates() {
         this._stopUpdates();
-        
+
         // Initial metrics
         const initialMetrics = getMetrics();
         this._updateView(initialMetrics);
-        
+
         // Set up real-time updates
         this._updateInterval = watch((metrics: PerformanceMetrics) => {
             if (this._view) {
@@ -58,10 +58,10 @@ export class PerformanceViewProvider implements vscode.WebviewViewProvider {
             }
         }, 1000);
     }
-    
+
     private _updateView(metrics: PerformanceMetrics) {
         if (!this._view) {return;}
-        
+
         // Format metrics for the view
         const formattedMetrics = {
             cpu: (metrics.cpuUsage * 100).toFixed(1),
@@ -70,31 +70,31 @@ export class PerformanceViewProvider implements vscode.WebviewViewProvider {
             loadAverage: metrics.loadAverage.map(load => load.toFixed(2)).join(', '),
             uptime: this._formatUptime(metrics.uptimeSeconds)
         };
-        
+
         this._view.webview.postMessage({
             type: 'updateMetrics',
             metrics: formattedMetrics
         });
     }
-    
+
     private _formatUptime(seconds: number): string {
         const days = Math.floor(seconds / 86400);
         const hours = Math.floor((seconds % 86400) / 3600);
         const minutes = Math.floor((seconds % 3600) / 60);
         const secs = Math.floor(seconds % 60);
-        
+
         const parts = [];
         if (days > 0) { parts.push(`${days}d`); }
         if (hours > 0) { parts.push(`${hours}h`); }
         if (minutes > 0) { parts.push(`${minutes}m`); }
         if (secs > 0 || parts.length === 0) { parts.push(`${secs}s`); }
-        
+
         return parts.join(' ');
     }
 
     private _stopUpdates() {
         if (this._updateInterval) {
-            clearInterval(this._updateInterval);
+            this._updateInterval();
             this._updateInterval = undefined;
         }
     }
@@ -166,7 +166,7 @@ export class PerformanceViewProvider implements vscode.WebviewViewProvider {
                     const message = event.data;
                     if (message.type === 'updateMetrics') {
                         document.getElementById('cpu')!.textContent = message.metrics.cpu + '%';
-                document.getElementById('memory')!.textContent = 
+                document.getElementById('memory')!.textContent =
                     message.metrics.memory + ' MB / ' + message.metrics.totalMemory + ' MB';
                 document.getElementById('load')!.textContent = message.metrics.loadAverage;
                 document.getElementById('uptime')!.textContent = message.metrics.uptime;                  }

@@ -138,3 +138,55 @@ All notable changes to the VS Blue extension will be documented in this file.
 - Icon generation.
 - Layout management.
 - Overlay system.
+
+## [2.1.0] - 2025-06-14
+
+### Added
+- Deployed RedQueen MCP Contract Arbiter to Cloudflare Workers
+- API key authentication for all mutating endpoints
+- Bulk contract loader script with YAML/JSON id-based KV keying
+- Auto-feeding contract watcher for seamless pipeline sync
+- CLI client for contract fetch, claim, and drift reporting
+- Trust decay logic and D1 schema for agent trust scores
+- Full JSON-RPC 2.0 support for contract arbitration
+- .env-based local secret management for CLI/dev
+
+### Changed
+- Standardized contract keying to use contract `id` field
+- Improved error handling and validation in loader and server
+- Updated documentation for secure secret storage and extension integration
+
+### Fixed
+- Resolved deployment and binding naming issues
+- Ensured all pipeline steps are agentic, modular, and secure
+
+## [2.1.1] - 2025-06-14
+
+### Added
+- Trust score endpoint `/trust/:agentId` and JSON-RPC method `getTrustScore`
+- CLI support for fetching agent trust scores (REST and RPC)
+- Contract schema validation and expiry check in loader script
+
+### Changed
+- Improved loader script to skip invalid/expired contracts
+
+## [2.1.2] - 2025-06-15
+
+### Added
+- Background agent implementation with task queue management
+- MCP (Master Control Program) server and client architecture
+- Pre-commit hooks with Husky and lint-staged
+- Code formatting with Prettier
+- TypeScript-based MCP tool execution system
+- Express-based MCP server with tool registration
+- Task queue management in background agent
+- Event-driven architecture for agent and MCP components
+
+### Changed
+- Updated development workflow with automated code formatting
+- Enhanced code quality with pre-commit hooks
+- Improved project structure with modular agent system
+
+### Fixed
+- Code style consistency through automated formatting
+- Type safety improvements in MCP tool execution

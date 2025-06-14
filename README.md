@@ -221,3 +221,37 @@ Use these to gate dev/experimental features in the UI and backend.
 ---
 
 MIT License
+
+## 🛠️ RedQueen MCP CLI Usage
+
+All commands are run from the `projects/cloudflare/mcp-server/` directory.
+
+### Prerequisites
+- `.env` file with your API key:
+  ```
+  REDQUEEN_API_KEY=your-very-secret-key-here
+  ```
+- Install dependencies:
+  ```
+  pnpm install
+  ```
+
+### Commands & Aliases
+
+| Command         | Alias | Args                                      | Description                       |
+|----------------|-------|-------------------------------------------|-----------------------------------|
+| getContract    | getc  | <contractId>                              | Fetch a contract by ID            |
+| claim          | clam  | <contractId> <agentId> <srDelta>          | Submit a claim                    |
+| reportDrift    | drft  | <contractId> <agentId> <drift>            | Report drift                      |
+| getTrustScore  | trst  | <agentId>                                 | Get agent trust score             |
+| --help, -h     | help  |                                           | Show help screen                  |
+
+### Usage Examples
+
+```sh
+pnpm tsx scripts/mcp-client.ts getc MemoryTrace::Indexer
+pnpm tsx scripts/mcp-client.ts clam MemoryTrace::Indexer RedQueen::Windsurf 0.81
+pnpm tsx scripts/mcp-client.ts drft MemoryTrace::Indexer RedQueen::Windsurf 0.12
+pnpm tsx scripts/mcp-client.ts trst RedQueen::Windsurf
+pnpm tsx scripts/mcp-client.ts --help
+```
