@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ICacheManager } from '../../types';
+import { ICacheManager } from '../types';
 
 export class CacheManager implements ICacheManager {
-    private cache = new Map<string, { timestamp: number; data: any }>();
+    private cache = new Map<string, { timestamp: number; data: any; ttl?: number }>();
     private readonly MAX_CACHE_AGE = 1000 * 60 * 30; // 30 minutes
 
     public async clear(): Promise<void> {

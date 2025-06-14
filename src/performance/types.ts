@@ -57,6 +57,8 @@ export interface PerformanceMetrics {
     
     // Memory history for trend analysis
     memoryHistory?: number[];
+    cpuHistory?: number[];
+    loadHistory?: number[];
 }
 
 export interface HeapStats {

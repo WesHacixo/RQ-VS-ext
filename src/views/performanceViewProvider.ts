@@ -6,7 +6,7 @@ export class PerformanceViewProvider implements vscode.WebviewViewProvider {
     public static readonly bottomViewType = 'vsblue.performanceViewBottom';
 
     private _view?: vscode.WebviewView;
-    private _updateInterval?: NodeJS.Timeout | (() => void);
+    private _updateInterval?: () => void;
 
     constructor(
         private readonly _extensionUri: vscode.Uri
@@ -94,7 +94,7 @@ export class PerformanceViewProvider implements vscode.WebviewViewProvider {
 
     private _stopUpdates() {
         if (this._updateInterval) {
-            clearInterval(this._updateInterval);
+            this._updateInterval();
             this._updateInterval = undefined;
         }
     }

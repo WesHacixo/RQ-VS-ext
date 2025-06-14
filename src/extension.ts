@@ -447,7 +447,7 @@ function showEditorDetails(context: vscode.ExtensionContext): void {
         }
     );
 
-    editorPanel.webview.html = getEditorDetailsHtml();
+    editorPanel.webview.html = currentMetrics ? getEditorDetailsHtml(currentMetrics) : '<div>No metrics available</div>';
     editorPanel.onDidDispose(() => {
         editorPanel = undefined;
     });
