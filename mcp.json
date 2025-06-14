@@ -1,0 +1,159 @@
+{
+  "tools": [
+    {
+      "id": "run_terminal",
+      "scope": "extension",
+      "description": "Spawn a terminal and run a command",
+      "parameters": {
+        "command": {
+          "type": "string",
+          "description": "The command to execute"
+        },
+        "is_background": {
+          "type": "boolean",
+          "description": "Whether to run in background"
+        }
+      }
+    },
+    {
+      "id": "edit_file",
+      "scope": "extension",
+      "description": "Edit a file in workspace via UI",
+      "parameters": {
+        "target_file": {
+          "type": "string",
+          "description": "Path to the file to edit"
+        },
+        "instructions": {
+          "type": "string",
+          "description": "Edit instructions"
+        },
+        "code_edit": {
+          "type": "string",
+          "description": "The code changes to apply"
+        }
+      }
+    },
+    {
+      "id": "search_workspace",
+      "scope": "extension",
+      "description": "Search files by name or content",
+      "parameters": {
+        "query": {
+          "type": "string",
+          "description": "Search query"
+        },
+        "include_pattern": {
+          "type": "string",
+          "description": "Glob pattern for files to include"
+        },
+        "exclude_pattern": {
+          "type": "string",
+          "description": "Glob pattern for files to exclude"
+        }
+      }
+    },
+    {
+      "id": "analyze.sr.drift",
+      "scope": "extension",
+      "description": "Analyze SR drift patterns in agent behavior",
+      "category": "analysis",
+      "estimatedCost": 3,
+      "parameters": {
+        "agentId": {
+          "type": "string",
+          "description": "Target agent ID"
+        },
+        "timeframe": {
+          "type": "string",
+          "description": "Analysis timeframe"
+        }
+      }
+    },
+    {
+      "id": "scan.imf.patterns",
+      "scope": "extension",
+      "description": "Scan for IMF patterns in agent memory",
+      "category": "analysis",
+      "estimatedCost": 2,
+      "parameters": {
+        "agentId": {
+          "type": "string",
+          "description": "Target agent ID"
+        },
+        "patternType": {
+          "type": "string",
+          "description": "Type of pattern to scan for"
+        }
+      }
+    },
+    {
+      "id": "sync.cache.to.remote",
+      "scope": "extension",
+      "description": "Synchronize agent cache with remote storage",
+      "category": "sync",
+      "estimatedCost": 2,
+      "parameters": {
+        "cacheType": {
+          "type": "string",
+          "description": "Type of cache to sync"
+        },
+        "force": {
+          "type": "boolean",
+          "description": "Force sync even if no changes"
+        }
+      }
+    },
+    {
+      "id": "refactor.agent.module",
+      "scope": "extension",
+      "description": "Refactor agent module for improved performance",
+      "category": "refactor",
+      "estimatedCost": 4,
+      "parameters": {
+        "moduleId": {
+          "type": "string",
+          "description": "Target module ID"
+        },
+        "refactorType": {
+          "type": "string",
+          "description": "Type of refactoring to perform"
+        }
+      }
+    },
+    {
+      "id": "test.agent.selfloop",
+      "scope": "extension",
+      "description": "Test agent self-loop functionality",
+      "category": "test",
+      "estimatedCost": 1,
+      "parameters": {
+        "agentId": {
+          "type": "string",
+          "description": "Target agent ID"
+        },
+        "testType": {
+          "type": "string",
+          "description": "Type of self-loop test"
+        }
+      }
+    },
+    {
+      "id": "simulate.agent.taskload",
+      "scope": "extension",
+      "description": "Simulate high task load for testing",
+      "category": "simulation",
+      "estimatedCost": 5,
+      "parameters": {
+        "taskCount": {
+          "type": "number",
+          "description": "Number of tasks to simulate"
+        },
+        "taskTypes": {
+          "type": "array",
+          "description": "Types of tasks to include"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"buildOptimizerManifest.js","sourceRoot":"","sources":["../../src/config/buildOptimizerManifest.ts"],"names":[],"mappings":";;;AAAa,QAAA,sBAAsB,GAAG;IACpC,mBAAmB,EAAE,MAAM;IAC3B,eAAe,EAAE,MAAM;IACvB,YAAY,EAAE,MAAM;IACpB,WAAW,EAAE,UAAU;IACvB,cAAc,EAAE,cAAc;IAC9B,WAAW,EAAE,UAAU;IACvB,cAAc,EAAE,cAAc;IAC9B,SAAS,EAAE,UAAU;IACrB,aAAa,EAAE,MAAM;CACtB,CAAC"}

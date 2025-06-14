@@ -1,0 +1,10 @@
+{
+  "cloudProvider": "gcp",
+  "deployTarget": "cloudrun",
+  "projectId": "redqueen-sandbox",
+  "region": "us-central1",
+  "entryPoint": "src/index.ts",
+  "env": {
+    "NODE_ENV": "production"
+  }
+}

@@ -1,0 +1,1 @@
+{"version":3,"file":"taskCommands.js","sourceRoot":"","sources":["../../src/mcp/taskCommands.ts"],"names":[],"mappings":";AAAA,oBAAoB;AACpB,qEAAqE;;;AAErE,2DAAmD;AAEtC,QAAA,eAAe,GAAG;IAC7B,eAAe,EAAE,CAAC,QAAgB,EAAE,EAAE;QACpC,IAAI,CAAC,wBAAQ,CAAC,cAAc,EAAE,CAAC;YAC7B,OAAO,yBAAyB,CAAC;QACnC,CAAC;QACD,6CAA6C;QAC7C,OAAO,wBAAwB,QAAQ,SAAS,CAAC;IACnD,CAAC;IACD,6BAA6B;CAC9B,CAAC"}
