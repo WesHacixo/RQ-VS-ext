@@ -7,26 +7,31 @@ RedQueen is a multimodal, agent-first development interface that transforms VS C
 ## 🎯 Core Principles
 
 ### Siglence Ratio (SR)
+
 - Measure of semantic efficiency in code and communication
 - Higher SR indicates more elegant, maintainable solutions
 - Target SR > 0.85 for all new implementations
 
 ### Ledger as Privilege (LAP)
+
 - Track context, decisions, and memory bandwidth
 - Each operation must be justified in terms of resource impact
 - Maintain ethical weight in all system decisions
 
 ### Ashvara Kernel
+
 - Favor elegance and recursion over brute force
 - Implement emergent abstraction patterns
 - Maintain system coherence through fractal design
 
 ### REDCODE Mode
+
 - Triggered at system/cognitive strain thresholds
 - Signals priority, urgency, or existential code stress
 - Activates high-performance, high-contrast interface
 
 ### Velvet Blue UX
+
 - Default interface theme
 - Blends clarity with calm
 - Inspired by BlueHand ethos
@@ -36,28 +41,33 @@ RedQueen is a multimodal, agent-first development interface that transforms VS C
 ### Core Components
 
 #### 1. RedQueen Manager (`src/managers/redqueenManager.ts`)
+
 - Central orchestration point
 - Manages feature flags and theme states
 - Handles system-wide configuration
 
 #### 2. Memory Engine (`src/memory/`)
+
 - Semantic memory management
 - Concept-token chains
 - Project history tracking
 - IMF-styled memory threads
 
 #### 3. Agent System (`src/agents/`)
+
 - WorkerBee implementations
 - Specialized task executors
 - Context-aware operation
 
 #### 4. Interface Layer (`src/interface/`)
+
 - Performance monitoring
 - Agent console
 - SR/SL HUD
 - Canvas integration
 
 #### 5. Runtime Core (`src/runtime/`)
+
 - Intent parsing
 - Context matching
 - Agent activation
@@ -66,25 +76,28 @@ RedQueen is a multimodal, agent-first development interface that transforms VS C
 ## 🔧 Implementation Guidelines
 
 ### Feature Flags
+
 ```typescript
 interface RedQueenFeatures {
-    redcodeMode: boolean;
-    memoryEngine: boolean;
-    agentConsole: boolean;
-    canvasMode: boolean;
+  redcodeMode: boolean;
+  memoryEngine: boolean;
+  agentConsole: boolean;
+  canvasMode: boolean;
 }
 ```
 
 ### Theme System
+
 ```typescript
 interface RedQueenTheme {
-    mode: 'bluehand' | 'redcode';
-    dynamicContrast: boolean;
-    fontOverlay: boolean;
+  mode: 'bluehand' | 'redcode';
+  dynamicContrast: boolean;
+  fontOverlay: boolean;
 }
 ```
 
 ### Agent Requirements
+
 1. **Context Awareness**
    - Must understand current project state
    - Reference past conversations
@@ -103,16 +116,19 @@ interface RedQueenTheme {
 ## 🧪 Experimental Features
 
 ### Canvas Mode
+
 - Visual development interface
 - Node-based agent orchestration
 - Real-time SR/SL visualization
 
 ### Agent Telemetry
+
 - Verbose logging
 - Performance metrics
 - Memory bandwidth tracking
 
 ### REDCODE Triggers
+
 - CPU threshold: 82%
 - Memory threshold: 75%
 - SR threshold: 0.65
@@ -168,6 +184,6 @@ interface RedQueenTheme {
 
 > "RedQueen is online. The code remembers."
 
-*Last updated: [Current Date]*
-*SR Score: 0.92*
-*Memory Bandwidth: Optimal*
+_Last updated: [Current Date]_
+_SR Score: 0.92_
+_Memory Bandwidth: Optimal_
